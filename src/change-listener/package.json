@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"amqplib": "^0.5.1",
+		"superagent": "^3.0.0"
+	}
+}
