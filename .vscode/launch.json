@@ -7,15 +7,56 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}/.compiled/app.js",
+            "name": "Launch Bulk Loader",
+            "program": "${workspaceRoot}/.compiled/bulk-loader/bulk-loader.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "compile",
+            "preLaunchTask": "rebuild",
             "runtimeExecutable": null,
             "runtimeArgs": ["--nolazy"],
             "env": {
+                "NODE_ENV": "development",
+				"QUEUE_HOST": "138.197.222.201",
+				"REGISTRY_URI": "http://registry.npmjs.org/-/all",
+				"PRIORITY_QUEUE": "priority"
+            },
+            "console": "internalConsole",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/.compiled"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Change Listener",
+            "program": "${workspaceRoot}/.compiled/change-listener/change-listener.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "rebuild",
+            "runtimeExecutable": null,
+            "runtimeArgs": ["--nolazy"],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "console": "internalConsole",
+            "sourceMaps": true,
+            "outDir": "${workspaceRoot}/.compiled"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch DB Importer",
+            "program": "${workspaceRoot}/.compiled/db-importer/db-importer.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "rebuild",
+            "runtimeExecutable": null,
+            "runtimeArgs": ["--nolazy"],
+            "env": {
+				"NEO4J_HOST": "localhost",
+				"NEO4J_AUTH": "bmVvNGo6Y29ycmVjdC1ob3JzZS1iYXR0ZXJ5LXN0YXBsZQ==",
                 "NODE_ENV": "development"
             },
             "console": "internalConsole",

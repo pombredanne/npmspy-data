@@ -6,7 +6,7 @@ const priorityQueue = process.env.PRIORITY_QUEUE; // 'priority';
 const endpoint = `http://${process.env.NEO4J_HOST}:7474/db/data/transaction/commit`;
 const authorization = `Basic ${process.env.NEO4J_AUTH}`;
 
-export default function (id, callback) {
+export function handlePackage(id, callback) {
 	callback = callback || function () { };
 
 	request.get(`${replicationHost}/${id.replace('/', '%2f')}`, (err, res) => {
@@ -73,6 +73,32 @@ export default function (id, callback) {
 			}
 		});
 	});
+}
+
+export function ensureIndcies(callback) {
+	request
+		.get(`http://${process.env.NEO4J_HOST}:7474/db/data/schema/index`)
+		.set('Authorization', authorization)
+		.end((err, result) => {
+			if (err) {
+				callback(err);
+			} else if (result && result.body) {
+				if (result.body.length < 2) {
+
+					const statements = [
+						{ statement: 'CREATE CONSTRAINT ON (p:Package) ASSERT p.id IS UNIQUE' },
+						{ statement: 'CREATE CONSTRAINT ON (v:Version) ASSERT v.id IS UNIQUE' }
+					];
+
+					query(statements, 10000, callback);
+
+				} else {
+					callback();
+				}
+			} else {
+				callback('UNEXPECTED_RESULT');
+			}
+		});
 }
 
 function writeVersions(id, rev, versionsWithDependencies, versionsWithoutDependencies, callback) {

@@ -1,19 +1,40 @@
 version: "2"
 services:
+  nginx:
+    image: npmspy/api:latest
+    ports:
+     - 80:80
+     - 443:443
+    volumes:
+     - /etc/letsencrypt:/etc/letsencrypt
+
+#   api:
+#     image: npmspy/api:latest
+#     depends_on:
+#      - "nginx"
+#      - "neo4j"
+
+#   website:
+#     image: npmspy/website:latest
+#     depends_on:
+#      - "api"
+
   neo4j:
     image: "npmspy/neo4j:latest"
     ports:
      - "7474:7474"
      - "7687:7687"
     volumes:
-     - $HOME/neo4j/data2:/data
-     - $HOME/neo4j/logs:/logs
+     - /mnt/volume-sfo2-01-part1/neo4j/data:/data
+     - /mnt/volume-sfo2-01-part1/neo4j/logs:/logs
     environment:
       NEO4J_AUTH: 'neo4j/correct-horse-battery-staple'
 
   rabbitmq:
     image: "rabbitmq:3-management"
     hostname: "rabbitmq"
+    volumes:
+     - /mnt/volume-sfo2-01-part1/rabbitmq:/var/lib/rabbitmq
     ports:
      - "8080:15672"
      - "5671:5671"
@@ -21,15 +42,20 @@ services:
 
   listener:
     image: "npmspy/change-listener:latest"
+    restart: on-failure
     depends_on:
      - "rabbitmq"
+    volumes:
+     - /mnt/volume-sfo2-01-part1/listener/state:/state
     environment:
+      NODE_ENV: production
       REPLICATION_HOST: "https://replicate.npmjs.com"
       QUEUE_HOST: "rabbitmq"
       PRIORITY_QUEUE: "priority"
 
   importer:
     image: "npmspy/db-importer:latest"
+    restart: on-failure
     depends_on:
      - "neo4j"
      - "rabbitmq"

@@ -7,6 +7,8 @@ const replicationHost = process.env.REPLICATION_HOST; // 'https://replicate.npmj
 const queueHost = `amqp://${process.env.QUEUE_HOST}`; // 'amqp://192.168.1.106';
 const priorityQueue = process.env.PRIORITY_QUEUE; // 'priority';
 
+const seqfile = process.env.NODE_ENV === 'production' ? '/state/seq' : 'seq';
+
 const interval = 5000;
 
 // Timeout allows rabbitmq to start before attempting to open the connection
@@ -17,11 +19,11 @@ setTimeout(() =>
 			console.log(err);
 		} else {
 			connection.createChannel(function (err, channel) {
-				channel.assertQueue(priorityQueue, { durable: false });
+				channel.assertQueue(priorityQueue, { durable: true });
 
 				console.log('getting initial update_seq');
-				fs.readFile('seq', (err, result) => {
-					if (err) {
+				getseq((err, result) => {
+					if (err || !result) {
 						console.log('(reset to latest change)');
 						request.get(`${replicationHost}/`, (err, res) => {
 							if (err) {
@@ -38,7 +40,7 @@ setTimeout(() =>
 			});
 		}
 	})
-	, 5000);
+	, 10000);
 
 function watch(seq, channel) {
 	let lastSeq = seq;
@@ -53,7 +55,7 @@ function watch(seq, channel) {
 				lastSeq = res.body.last_seq;
 				handleChanges(res.body.results, channel);
 			}
-			fs.writeFile('seq', '' + lastSeq, err => {
+			setseq('' + lastSeq, err => {
 				if (err) {
 					console.log(err);
 				}
@@ -70,7 +72,7 @@ function handleChanges(changes, channel) {
 				var obj = { id: change.id, rev: c.rev, seq: change.seq, deleted: c.deleted || false };
 
 				// Note: on Node 6 Buffer.from(msg) should be used
-				channel.sendToQueue(priorityQueue, new Buffer(JSON.stringify(obj)));
+				channel.sendToQueue(priorityQueue, new Buffer(JSON.stringify(obj)), { persistent: true });
 				console.log(obj);
 			});
 		});
@@ -78,11 +80,13 @@ function handleChanges(changes, channel) {
 }
 
 function getseq(callback) {
-	process.env.REV_SEQ;
-	callback(null, process.env.REV_SEQ);
+	fs.readFile(seqfile, 'utf8', (err, result) => {
+		callback(err, result);
+	});
 }
 
 function setseq(value, callback) {
-	process.env.REV_SEQ = value;
-	callback();
+	fs.writeFile(seqfile, '' + value, err => {
+		callback(err);
+	});
 }
