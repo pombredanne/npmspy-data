@@ -79,7 +79,7 @@ export function getTreeDiff(lhsVersionId, lhsTs, rhsVersionId, rhsTs, callback) 
 		lhs = {
 			packageId: lhs.package.split('@')[0],
 			version: lhs.package.split('@')[1],
-			ts: rhsTs,
+			ts: lhsTs,
 			dependencies: lhs.tree.dependencies
 		};
 
