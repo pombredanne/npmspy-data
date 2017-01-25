@@ -64,6 +64,25 @@ app.get('/:packageId/versions/:version', (req, res) => {
 		});
 });
 
+app.get('/:packageId/versions/:version/diff', (req, res, next) => {
+	req.swagger.rhsversion = req.swagger.rhsversion || req.swagger.version;
+	req.swagger.rhsts = req.swagger.rhsts;
+
+	services.treeService.getTreeDiff(
+		req.swagger.packageId + '@' + req.swagger.version,
+		req.swagger.ts,
+		req.swagger.packageId + '@' + req.swagger.rhsversion,
+		req.swagger.rhsts,
+		(err, result) => {
+			if (err) {
+				next(err);
+			} else {
+				res.json(result);
+			}
+		}
+	);
+});
+
 app.get('/:packageId/versions/:version/history', (req, res, next) => {
 	res.status(501).json({ message: 'This route has been turned off while we sort out some performance issues.' });
 	// services.diffService.getDiffs(

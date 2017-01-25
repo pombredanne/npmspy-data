@@ -154,6 +154,55 @@
                 ]
             }
         },
+        "/packages/{packageId}/versions/{version}/diff": {
+            "get": {
+                "summary": "Version dependency tree diff",
+                "description": "Gets the difference between the dependency trees of two versions, or versions at different points in time.",
+                "parameters": [
+                    {
+                        "name": "packageId",
+                        "in": "path",
+                        "description": "Package ID (not including a version or semver range)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "Version number (not a semver range) for the left-hand side (LHS) of the comparison",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ts",
+                        "in": "query",
+                        "description": "UTC timestamp (ms) at which the LHS dependency tree will be resolved.",
+                        "type": "integer",
+                        "minimum": "0"
+                    },
+                    {
+                        "name": "rhsversion",
+                        "in": "query",
+                        "description": "Version number (not a semver range) for the right-hand side (RHS) of the comparison.  Defaults to the LHS version.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "rhsts",
+                        "in": "query",
+                        "description": "UTC timestamp (ms) at which the RHS dependency tree will be resolved.  Defaults to the RHS timestamp.",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TODO"
+                    }
+                },
+                "tags": [
+                    "Packages"
+                ]
+            }
+        },
         "/packages/{packageId}/versions/{version}/history": {
             "get": {
                 "summary": "Version dependency tree history",
