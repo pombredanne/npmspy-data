@@ -176,7 +176,7 @@
                     {
                         "name": "ts",
                         "in": "query",
-                        "description": "UTC timestamp (ms) at which the LHS dependency tree will be resolved.",
+                        "description": "UTC timestamp (ms) at which the LHS dependency tree will be resolved.  Defaults to the current time",
                         "type": "integer",
                         "minimum": "0"
                     },
@@ -189,7 +189,7 @@
                     {
                         "name": "rhsts",
                         "in": "query",
-                        "description": "UTC timestamp (ms) at which the RHS dependency tree will be resolved.  Defaults to the RHS timestamp.",
+                        "description": "UTC timestamp (ms) at which the RHS dependency tree will be resolved.  Defaults to the current time.",
                         "type": "string"
                     }
                 ],
