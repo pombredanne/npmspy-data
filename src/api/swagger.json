@@ -1,0 +1,211 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "NpmSpy API",
+        "description": "Super fast jellyfish",
+        "version": "1.0.0"
+    },
+    "schemes": [
+        "https"
+    ],
+    "basePath": "",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/packages": {
+            "get": {
+                "summary": "Product Types",
+                "description": "Response contains a list of package IDs that start with the specified query string.",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Package query string.  Note: no results will be returned unless this contains at least 2 characters",
+                        "required": true,
+                        "type": "string",
+                        "minLength": 2
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Specifies an offset to facilitate paging",
+                        "type": "integer",
+                        "minimum": "0",
+                        "default": "0"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of packages to return.  Must be between 1 and 100.",
+                        "type": "integer",
+                        "minimum": "1",
+                        "maximum": "100",
+                        "default": "25"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TODO"
+                    }
+                },
+                "tags": [
+                    "Packages"
+                ]
+            }
+        },
+        "/packages/{packageId}": {
+            "get": {
+                "summary": "Product Types",
+                "description": "TODO",
+                "parameters": [
+                    {
+                        "name": "packageId",
+                        "in": "path",
+                        "description": "query.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TODO"
+                    }
+                },
+                "tags": [
+                    "Packages"
+                ]
+            }
+        },
+        "/packages/{packageId}/versions": {
+            "get": {
+                "summary": "Product Types",
+                "description": "Response contains a list of package IDs that start with the specified query string.",
+                "parameters": [
+                    {
+                        "name": "packageId",
+                        "in": "path",
+                        "description": "query.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Specifies an offset to facilitate paging",
+                        "type": "integer",
+                        "minimum": "0",
+                        "default": "0"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of versions to return.  Must be between 1 and 100.",
+                        "type": "integer",
+                        "minimum": "1",
+                        "maximum": "100",
+                        "default": "25"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TODO"
+                    }
+                },
+                "tags": [
+                    "Packages"
+                ]
+            }
+        },
+        "/packages/{packageId}/versions/{version}": {
+            "get": {
+                "summary": "Version dependency tree",
+                "description": "Resolves a dependecy tree using the most current published dependencies",
+                "parameters": [
+                    {
+                        "name": "packageId",
+                        "in": "path",
+                        "description": "Package ID (not including a version or semver range)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "Version number (not a semver range)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ts",
+                        "in": "query",
+                        "description": "UTC timestamp (ms) at which the dependency tree will be resolved.",
+                        "type": "integer",
+                        "minimum": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TODO"
+                    }
+                },
+                "tags": [
+                    "Packages"
+                ]
+            }
+        },
+        "/packages/{packageId}/versions/{version}/history": {
+            "get": {
+                "summary": "Version dependency tree history",
+                "description": "Gets a list of history entries that show how a packages sub-dependencies have changed over time.  If no optional parameters are supplied, the most recent results are returned.  Results are always sorted in descending order.",
+                "parameters": [
+                    {
+                        "name": "packageId",
+                        "in": "path",
+                        "description": "Package ID (not including a version or semver range)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "version",
+                        "in": "path",
+                        "description": "Version number (not a semver range)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ending",
+                        "in": "query",
+                        "description": "UTC timestamp (ms) of the last history entry to return.  This in an inclusive limit and does not affect sort order.  If this value is present, the 'after' parameter will be ignored if present.",
+                        "type": "integer",
+                        "minimum": "0"
+                    },
+                    {
+                        "name": "after",
+                        "in": "query",
+                        "description": "UTC timestamp (ms) of a point in time after which history entries will be returned.  This in an exclusive limit and does not affect sort order.  This value will be ignored if the 'ending' parameter is present.",
+                        "type": "integer",
+                        "minimum": "0"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Number of history entries to return.  Must be between 1 and 100.",
+                        "type": "integer",
+                        "minimum": "1",
+                        "maximum": "100",
+                        "default": "25"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "TODO"
+                    }
+                },
+                "tags": [
+                    "Packages"
+                ]
+            }
+        }
+    }
+}

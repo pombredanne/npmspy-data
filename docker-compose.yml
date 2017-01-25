@@ -1,23 +1,33 @@
 version: "2"
 services:
   nginx:
-    image: npmspy/api:latest
+    image: npmspy/nginx:latest
     ports:
      - 80:80
      - 443:443
     volumes:
      - /etc/letsencrypt:/etc/letsencrypt
 
-#   api:
-#     image: npmspy/api:latest
-#     depends_on:
-#      - "nginx"
-#      - "neo4j"
+  api:
+    image: npmspy/api:latest
+    depends_on:
+     - "nginx"
+     - "neo4j"
+    ports:
+     - 3001:3001
+    environment:
+      NEO4J_HOST: neo4j
+      NEO4J_AUTH: bmVvNGo6Y29ycmVjdC1ob3JzZS1iYXR0ZXJ5LXN0YXBsZQ==
+      NODE_ENV: development
 
-#   website:
-#     image: npmspy/website:latest
-#     depends_on:
-#      - "api"
+  website:
+    image: npmspy/website:latest
+    depends_on:
+     - api
+    ports:
+     - 3000:3000
+    environment:
+      NPMSPY_API_HOST: http://api:3001
 
   neo4j:
     image: "npmspy/neo4j:latest"

@@ -11,15 +11,20 @@
     "docker-listener": "docker build -t npmspy/change-listener ./.compiled/change-listener",
     "docker-importer": "docker build -t npmspy/db-importer ./.compiled/db-importer",
     "docker-neo4j": "docker build -t npmspy/neo4j ./.compiled/neo4j",
+    "docker-nginx": "docker build -t npmspy/nginx ./.compiled/nginx",
     "docker-api": "docker build -t npmspy/api ./.compiled/api",
-    "docker": "npm run docker-listener & npm run docker-importer & npm run docker-neo4j"
+    "docker": "npm run docker-listener & npm run docker-importer & npm run docker-neo4j & npm run docker-nginx & npm run docker-api"
   },
   "author": "Steve Konves",
   "license": "MIT",
   "dependencies": {
     "amqplib": "^0.5.1",
     "express": "^4.14.0",
-    "superagent": "^3.0.0"
+    "express-http-context": "^0.2.0",
+    "jsonschema": "^1.1.1",
+    "superagent": "^3.3.2",
+    "swaggerize-ui": "^1.0.1",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

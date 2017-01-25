@@ -1,6 +1,4 @@
-FROM smebberson/alpine-nginx-nodejs
-
-COPY nginx.conf /etc/nginx/
+FROM mhart/alpine-node:4.7.2
 
 # Create app directory
 RUN mkdir -p /usr/src/app
@@ -10,6 +8,7 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install --production
 
-COPY server.js /usr/src/app
+ADD . /usr/src/app/
 
-CMD [ "node", "server" ]
+EXPOSE 3001
+CMD ["node", "server"]
