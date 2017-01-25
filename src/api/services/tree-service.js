@@ -199,7 +199,7 @@ function getGitDiffUri(packageData, vStart, vEnd) {
 			const uriStart = start.repository.url;
 			const uriEnd = end.repository.url;
 
-			if (uriStart && uriEnd && start.gitHead && end.gitHead && uriStart.indexOf('//github.com/') > -1 && uriEnd.indexOf('//github.com/') > -1) {
+			if (uriStart && uriEnd && start.gitHead && end.gitHead && uriStart.indexOf('github.com/') > -1 && uriEnd.indexOf('github.com/') > -1) {
 				const reg = /github\.com\/([^/]*)\/([^\.]*)/;
 				const partsStart = reg.exec(uriStart);
 				const partsEnd = reg.exec(uriEnd);
