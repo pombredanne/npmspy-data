@@ -16,7 +16,7 @@
             "runtimeExecutable": null,
             "runtimeArgs": ["--nolazy"],
             "env": {
-				"NEO4J_HOST": "192.168.1.106",
+				"NEO4J_HOST": "npmspy.com",
 				"NEO4J_AUTH": "bmVvNGo6Y29ycmVjdC1ob3JzZS1iYXR0ZXJ5LXN0YXBsZQ==",
                 "NODE_ENV": "development"
             },

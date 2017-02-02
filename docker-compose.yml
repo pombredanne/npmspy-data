@@ -10,13 +10,13 @@ services:
 
   api:
     image: npmspy/api:latest
-    depends_on:
-     - "nginx"
-     - "neo4j"
+    # depends_on:
+    #  - "nginx"
+    #  - "neo4j"
     ports:
      - 3001:3001
     environment:
-      NEO4J_HOST: neo4j
+      NEO4J_HOST: npmspy.com # neo4j
       NEO4J_AUTH: bmVvNGo6Y29ycmVjdC1ob3JzZS1iYXR0ZXJ5LXN0YXBsZQ==
       NODE_ENV: development
 
